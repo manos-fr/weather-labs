@@ -1,8 +1,10 @@
 import json
 import time
-from data_fetcher import get_weather
-from message_handler import send_sms
-from storage_handler import load_data, save_data
+
+from PythonSE105.messaging.storage_handler import load_data
+from data_fetcher.data_fetcher import get_weather, get_messages
+from message_handler.message_handler import send_sms
+from storage_handler.storage_handler import get_data, save_data
 
 # Constants definition
 MESSAGE_API_ENDPOINT = "http://hackathons.masterschool.com:3030/POST/sms/send"
@@ -13,6 +15,7 @@ PHONE_NUMBER = '491771786208'
 SUBSCRIBE_MESSAGE = 'SUBSCRIBE THUNDERLABS'
 JSON_FILE = "users.json"
 API_CALL_INTERVAL = 240
+#UPDATE_FREQUENCY = 3600 #daily fixed - need to handle this in the main
 
 def sms_interaction(messages, users):
     for item in messages:
@@ -22,7 +25,7 @@ def sms_interaction(messages, users):
         #handle location
         if team_name == "SUBSCRIBE THUNDERLABS" and user_phone not in users:
             try:
-                send_sms(user_phone, "Add your LOCATION", MESSAGE_API_ENDPOINT)#TO WRITE TO the post send sms
+                send_sms(user_phone, "sms your LOCATION", MESSAGE_API_ENDPOINT)#TO WRITE TO the post send sms
             except Exception as e:
                 print(f"not a valid num {user_phone}: {e}")
                 continue
@@ -55,7 +58,7 @@ def main():
         messages= get_messages(MESSAGE_FETCH_API)
         time.sleep(API_CALL_INTERVAL)
         print("waiting...")
-        users = load_data(JSON_FILE)
+        users = get_data(JSON_FILE)
         sms_interaction(messages,users)
         time.sleep(API_CALL_INTERVAL)
 
