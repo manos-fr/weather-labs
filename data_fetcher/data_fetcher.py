@@ -16,17 +16,16 @@ def get_messages(api_endpoint, team_name):
             print("Response content:", response.content)
         raise
 
-WEATHER_API_KEY = '6fd476d486aef7837462c558dfcaedc5'
 
-def get_weather(lat,lon):
-    """Fetch the weather from the weather API"""
-    try:
-        response = requests.get(
-            f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={WEATHER_API_KEY}")
-        response.raise_for_status()
+
+WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+WEATHER_API_KEY = '6fd476d486aef7837462c558dfcaedc5'
+def get_weather(url):
+    """Fetch weather data from the OpenWeatherMap API."""
+    response = requests.get(url)
+    if response.status_code == 200:
         return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching weather data: {e}")
-        return {}
+    else:
+        response.raise_for_status()
 
 

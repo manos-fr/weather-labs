@@ -56,12 +56,16 @@ def sms_interaction(messages, users):
 
         elif text.startswith("LOCATION"):
             # Handle location update
-            city_name = text.split(" ", 1)[1]  # Extract city name from the message
-            users[user_phone]['location'] = city_name
-            send_sms(user_phone, f"Location '{city_name}' received. You will get weather updates shortly.",
-                     MESSAGE_API_ENDPOINT)
-            save_data(JSON_FILE, users)
-
+            parts = text.split(" ", 1)
+            if len(parts) > 1:
+                city_name = parts[1]  # Extract city name from the message
+                users[user_phone]['location'] = city_name
+                send_sms(user_phone, f"Location '{city_name}' received. You will get weather updates shortly.",
+                         MESSAGE_API_ENDPOINT)
+                save_data(JSON_FILE, users)
+            else:
+                send_sms(user_phone, "Error: Invalid LOCATION format. Please use 'LOCATION <CityName>'.",
+                         MESSAGE_API_ENDPOINT)
 
 def send_weather_updates(users):
     for user_phone, user_data in users.items():
@@ -70,19 +74,28 @@ def send_weather_updates(users):
             try:
                 weather_url = f"{WEATHER_API_URL}appid={WEATHER_API_KEY}&q={location}"
                 weather_data = get_weather(weather_url)
-                weather_description = weather_data['weather'][0]['description']
-                forecast_message = f"The weather in {location} is {weather_description}."
+                print(weather_data)
 
-                send_sms(user_phone, forecast_message, MESSAGE_API_ENDPOINT)
-                print(f"Weather update sent to {user_phone}")
+                if 'weather' in weather_data and weather_data['weather']:
+                    weather_description = weather_data['weather'][0]['description']
+                    forecast_message = f"The weather in {location} will be a: {weather_description}"
+                    print(forecast_message)
+                    send_sms(user_phone, forecast_message, MESSAGE_API_ENDPOINT)
+                    print(f"Weather update sent to {user_phone}")
 
-                user_data["last_update"] = datetime.datetime.now().isoformat()
-                user_data["weather"] = weather_data
-                save_data(JSON_FILE, users)
-            except Exception as e:
-                print(f"Error sending weather update to {user_phone}: {e}")
+                    user_data["last_update"] = datetime.datetime.now().isoformat()
+                    user_data["weather"] = weather_data
+                    save_data(JSON_FILE, users)
+                else:
+                    send_sms(user_phone, "Error: No weather data available.", MESSAGE_API_ENDPOINT)
+
+            except requests.RequestException as e:
+                print(f"Error fetching weather data for {user_phone}: {e}")
+                send_sms(user_phone, "Error: Could not fetch weather data.", MESSAGE_API_ENDPOINT)
 
         time.sleep(API_CALL_INTERVAL)
+
+
 
 
 def main():
