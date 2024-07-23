@@ -1,5 +1,5 @@
 {
-    "1234567890": {
+    "306986147950": {
         "location": "Dublin",
         "weather": {
             "coord": {
@@ -8,33 +8,32 @@
             },
             "weather": [
                 {
-                    "id": 802,
-                    "main": "Clouds",
-                    "description": "scattered clouds",
-                    "icon": "03n"
+                    "id": 800,
+                    "main": "Clear",
+                    "description": "clear sky",
+                    "icon": "01n"
                 }
             ],
             "base": "stations",
             "main": {
-                "temp": 292.04,
-                "feels_like": 291.71,
-                "temp_min": 287.45,
-                "temp_max": 294.87,
+                "temp": 291.25,
+                "feels_like": 290.94,
+                "temp_min": 287.42,
+                "temp_max": 294.01,
                 "pressure": 1010,
-                "humidity": 66,
+                "humidity": 70,
                 "sea_level": 1010,
                 "grnd_level": 985
             },
             "visibility": 10000,
             "wind": {
-                "speed": 1.19,
-                "deg": 222,
-                "gust": 1.24
+                "speed": 0,
+                "deg": 0
             },
             "clouds": {
-                "all": 36
+                "all": 0
             },
-            "dt": 1721728485,
+            "dt": 1721736657,
             "sys": {
                 "type": 2,
                 "id": 2016191,
@@ -47,6 +46,6 @@
             "name": "Dublin",
             "cod": 200
         },
-        "last_update": "2024-07-23T11:57:17.567352"
+        "last_update": "2024-07-23T15:17:42.746967"
     }
 }

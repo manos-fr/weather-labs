@@ -11,13 +11,14 @@ def send_sms(phone_number, message, api_endpoint):
         """
     try:
         payload = {
-            'phone_number': phone_number,
-            'message': message
+            'phoneNumber': phone_number,
+            'message': message,
+            'sender': 'THUNDERLABS'
         }
 
         # Send the POST request to the SMS API endpoint
-        response = requests.post(api_endpoint, json=payload)
-
+        response = requests.post(api_endpoint, json=payload, timeout=5)
+        print('send sms response', response.json())
         # Check for HTTP request errors
         response.raise_for_status()
 
