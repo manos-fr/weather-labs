@@ -8,12 +8,13 @@ from message_handler.message_handler import send_sms
 from storage_handler.storage_handler import get_data, save_data
 
 # Constants definition
-MESSAGE_API_ENDPOINT = "http://hackathons.masterschool.com:3030/POST/sms/send"
-MESSAGE_FETCH_API = "http://hackathons.masterschool.com:3030/GET/team/getMessages"
-WEATHER_API_URL = 'http://api.openweathermap.org/geo/1.0/direct?'
+TEAM_NAME = "THUNDERLABS"
+MESSAGE_API_ENDPOINT = "http://hackathons.masterschool.com:3030/sms/send"
+MESSAGE_FETCH_API = "http://hackathons.masterschool.com:3030/team/getMessages"
+WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 WEATHER_API_KEY = '6fd476d486aef7837462c558dfcaedc5'
 PHONE_NUMBER = '491771786208'
-SUBSCRIBE_MESSAGE = 'SUBSCRIBE THUNDERLABS'
+SUBSCRIBE_MESSAGE = f"SUBSCRIBE {TEAM_NAME}"
 JSON_FILE = "users.json"
 API_CALL_INTERVAL = 240
 #UPDATE_FREQUENCY = 3600 #daily fixed - need to handle this in the main
@@ -47,7 +48,7 @@ def send_weather_updates(users):
 
         try:
             location = user_data["location"]
-            weather_url = f"{WEATHER_API_URL}?appid={WEATHER_API_KEY}&q={location}"
+            weather_url = f"{WEATHER_API_URL}appid={WEATHER_API_KEY}&q={location}"
             weather_data = get_weather(weather_url)
             weather_description = weather_data['weather'][0]['description']
             forecast_message = f"The weather in the elected locatio {location} is {weather_description}."
@@ -58,7 +59,7 @@ def send_weather_updates(users):
 
             #some sort of update is needed probably
             # Update last update time and weather data
-            user_data["last_update"] = datetime.now().isoformat()
+            user_data["last_update"] = datetime.datetime.now().isoformat()
             user_data["weather"] = weather_data
             save_data(JSON_FILE, users)
         except Exception as e:
@@ -73,7 +74,8 @@ def main():
     while True:
         try:
             #get messages
-            messages= get_messages(MESSAGE_FETCH_API)
+            messages = get_messages(MESSAGE_FETCH_API, TEAM_NAME)
+            print(messages)
         except Exception as e:
             print("Messages were not retrieved")
             time.sleep(API_CALL_INTERVAL)
