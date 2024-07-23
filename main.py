@@ -8,6 +8,7 @@ from data_fetcher.data_fetcher import get_weather, get_messages
 from message_handler.message_handler import send_sms
 from storage_handler.storage_handler import get_data, save_data
 
+#testing the branch
 # Constants definition
 TEAM_NAME = "THUNDERLABS"
 MESSAGE_API_ENDPOINT = "http://hackathons.masterschool.com:3030/sms/send"
