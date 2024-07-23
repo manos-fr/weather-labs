@@ -26,3 +26,16 @@ def send_sms(phone_number, message, api_endpoint):
     except requests.exceptions.RequestException as e:
         print(f"not a valid message {phone_number}: {e}")
         return None
+
+def get_messages(api_endpoint, team_name):
+    """Fetch Messages from getMessages API"""
+    url = f"{api_endpoint}/{team_name}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching messages: {e}")
+        if response:
+            print("Response content:", response.content)
+        raise
