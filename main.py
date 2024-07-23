@@ -78,7 +78,7 @@ def send_weather_updates(users):
 
                 if 'weather' in weather_data and weather_data['weather']:
                     weather_description = weather_data['weather'][0]['description']
-                    forecast_message = f"The weather in {location} will be a: {weather_description}"
+                    forecast_message = f"The weather in {location} is  {weather_description}"
                     print(forecast_message)
                     send_sms(user_phone, forecast_message, MESSAGE_API_ENDPOINT)
                     print(f"Weather update sent to {user_phone}")
