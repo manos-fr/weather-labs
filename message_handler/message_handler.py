@@ -1,5 +1,28 @@
 #wendy, please add your code here
-def send_sms():
-    """sends sms????"""
-    pass
-#return ???
+import requests
+
+
+def send_sms(phone_number, message, api_endpoint):
+    """
+        user_phone: the phone number to which the message will be sent
+        forecast_message: the message to send
+        MESSAGE_API_ENDPOINT: URL of the API
+        return: JSON_FILE
+        """
+    try:
+        payload = {
+            'phone_number': phone_number,
+            'message': message
+        }
+
+        # Send the POST request to the SMS API endpoint
+        response = requests.post(api_endpoint, json=payload)
+
+        # Check for HTTP request errors
+        response.raise_for_status()
+
+        # Return the response data
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"not a valid message {phone_number}: {e}")
+        return None
