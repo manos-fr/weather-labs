@@ -2,7 +2,7 @@
 import requests
 
 
-def send_sms(phone_number, message, api_endpoint):
+async def send_sms(phone_number, message, api_endpoint):
     """
         user_phone: the phone number to which the message will be sent
         forecast_message: the message to send
@@ -13,7 +13,7 @@ def send_sms(phone_number, message, api_endpoint):
         payload = {
             'phoneNumber': phone_number,
             'message': message,
-            'sender': 'THUNDERLABS'
+            'sender': '491771786208'
         }
 
         # Send the POST request to the SMS API endpoint
