@@ -22,10 +22,13 @@ WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 WEATHER_API_KEY = '6fd476d486aef7837462c558dfcaedc5'
 def get_weather(url):
     """Fetch weather data from the OpenWeatherMap API."""
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        response.raise_for_status()
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+    except Exception as e:
+        print(f"Error fetching weather data: {e}")
 
 
